@@ -1,4 +1,4 @@
-# FGO_Bluetooth_Assistant
+﻿# FGO_Bluetooth_Assistant
 ### 项目简介，请仔细阅读（[跳转至中文部分](#jump1)）
 This is the V2.0 ver game assitant for Fate Grand Order (iOS &amp; Android both suitable). For details, see [the following photos](#jump2), or [my video on bilibili](https://www.bilibili.com/video/av82095192?p=2).
 
@@ -97,7 +97,7 @@ The following is the instruction of this programme, you can use translate webpag
 3.新增了无限池抽取功能(仅仅是简单的点击功能，未使用机器视觉)
 ## 一.概述
 ### 文件概述：
-0.`ReadMe.pdf`中有模块的淘宝地址以及使用概述
+0.ReadMe文件夹中的`ReadMe.pdf`文件有模块的淘宝地址以及使用概述
 
 1.`Base_func.py`中定义了游戏图像截取以及模板匹配函数
 
