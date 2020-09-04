@@ -11,6 +11,7 @@ import random
 sys.path.append(r'F:\FGO_Project') 
 import Serial 
 import Base_func
+import Mystic_Codes
 from Notice import sent_message
 
 class state:
@@ -145,22 +146,30 @@ def quit_battle():
     print(' Quit success')
     time.sleep(1)
         
-def Master_skill(skill_no,para1=3,para2=2):
-    Serial.touch(1010,266)               #御主技能按键    
-    if skill_no==1:
-        Serial.touch(760,266)        
-    elif skill_no==2:
-        Serial.touch(835,266)        
-    elif skill_no==3:                   #换人
-        Serial.touch(920,266)                           
-        Serial.touch(630+(para2-1)*170,300)            #默认换最后一人与替换区第二人        
-        Serial.touch(120+(para1-1)*170,300)        
-        Serial.touch(530,530)
+#def Master_skill(skill_no,para1=3,para2=2):
+#    Serial.touch(1010,266)               #御主技能按键    
+#    if skill_no==1:
+#        Serial.touch(760,266)        
+#    elif skill_no==2:
+#        Serial.touch(835,266)        
+#    elif skill_no==3:                   #换人
+#        Serial.touch(920,266)                           
+#        Serial.touch(630+(para2-1)*170,300)            #默认换最后一人与替换区第二人        
+#        Serial.touch(120+(para1-1)*170,300)        
+#        Serial.touch(530,530)
+#    time.sleep(1)    
+#    Current_state.WaitForBattleStart()
+#    print(' Master skill{} has pressed'.format(skill_no))
+#    time.sleep(1)
+        
+def Master_skill(func = Mystic_Codes.Chaldea_Combat_Uniform, *args):
+    Serial.touch(1010,266)               #御主技能按键
+    func(*args)
     time.sleep(1)    
     Current_state.WaitForBattleStart()
-    print(' Master skill{} has pressed'.format(skill_no))
+    print(' Master skill{} has pressed'.format(args[0]))
     time.sleep(1)
-        
+    
 def character_skill(character_no,skill_no,para=None):   #角色编号，技能编号，选人（可选）
     Position = (65+(character_no-1)*270+(skill_no-1)*80,488)
     Serial.touch(Position[0],Position[1])    
@@ -198,7 +207,7 @@ def battle():
     Current_state.WaitForBattleStart()
     #Turn2
     character_skill(3,3,1)
-    Master_skill(3)
+    Master_skill(Mystic_Codes.Chaldea_Combat_Uniform, 3,3,2)
     character_skill(3,3)
     character_skill(3,2)
     card()    

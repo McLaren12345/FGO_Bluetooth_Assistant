@@ -8,7 +8,6 @@ Created on Sun Jan 19 20:17:33 2020
 import sys
 sys.path.append(r'F:\FGO_Project') 
 import Serial
-import Base_func
 import time
 
 #无限池抽取函数
