@@ -47,7 +47,7 @@ The following is the instruction of this programme, you can use translate webpag
 
 
 ## 更新日志
-### 2020-8-21：
+### 2020-9-4：
 1.新增了御主礼装文件，可以在该文件中定义御主礼装的功能，将函数传入FGO_func中的Master_skill函数中即可快速实现礼装切换，无需大量修改代码
 
 ### 2020-8-21：
