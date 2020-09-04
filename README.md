@@ -48,6 +48,9 @@ The following is the instruction of this programme, you can use translate webpag
 
 ## 更新日志
 ### 2020-8-21：
+1.新增了御主礼装文件，可以在该文件中定义御主礼装的功能，将函数传入FGO_func中的Master_skill函数中即可快速实现礼装切换，无需大量修改代码
+
+### 2020-8-21：
 1.四周年正式推出了“连续出击”的功能，对程序中的进入战斗部分进行了相应的修改
 
 ### 2020-5-1:
@@ -109,13 +112,15 @@ The following is the instruction of this programme, you can use translate webpag
 
 5.`Config.py`~定义了csv脚本读取函数~,**(由于该功能过于鸡肋，本文件已废弃)**
 
-6.`FGO_optional_func`定义了一些非核心辅助性的功能，如：抽池等
+6.`FGO_optional_func.py`定义了一些非核心辅助性的功能，如：抽池等
 
-7.`Smart_Battle`定义了一些智能化战斗的底层识图API
+7.`Smart_Battle.py`定义了一些智能化战斗的底层识图API
 
-8.Bluebooth文件夹包含蓝牙鼠标模块的使用方法
+8.`Mystic_Codes.py`定义了御主礼装的功能，内附模板可自行增加常用的御主礼装
 
-9.Template文件夹包含识别用的图片模板
+9.Bluebooth文件夹包含蓝牙鼠标模块的使用方法
+
+10.Template文件夹包含识别用的图片模板
 
 ### 功能：
 
@@ -152,7 +157,7 @@ The following is the instruction of this programme, you can use translate webpag
 
 >3.1.英灵技能函数`character_skill`包含三个参数，分别为英灵位置、技能编号、目标英灵位置；如：想把2号位英灵的1技能加给3号位的英灵，可以写：`character_skill(2,1,3)`;想释放2号位英灵的3技能，可以写：`character_skill(2,3)`
 
->3.2.御主技能函数`Master_skill`包含三个参数，（目前使用的是换人服，可自行修改）分别为技能编号、被替换英灵位置、替换目标英灵位置，如：想释放御主的1技能，可以写：`Master_skill(1)`，想将场上第二个英灵与后排第三个英灵交换，可以写：`Master_skill(3,2,3)`
+>3.2.御主技能函数`Master_skill`包含一个御主礼装函数句柄参数，一个*args不定参数，（目前默认使用的是换人服，可自行修改）不定参数必须写技能编号，被替换英灵位置、替换目标英灵位置等信息都是可选参数，只需在使用到该指令使填写即可，如：想释放御主的1技能，可以写：`Master_skill(Mystic_Codes.Chaldea_Combat_Uniform,1)`，想将场上第二个英灵与后排第三个英灵交换，可以写：`Master_skill(Mystic_Codes.Chaldea_Combat_Uniform,3,3,2)`
 
 >3.3.发牌函数`card`包含一个参数，用于写要放的宝具位置，同时系统会随机发剩下两张牌，如：想释放1号位英灵的宝具，可以写：`card(1)`，系统会选择该宝具与任意两张牌
 
