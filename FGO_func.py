@@ -107,7 +107,7 @@ def find_friend(servant):
         Flag,Position = Base_func.match_template('Refresh_decide')
         Serial.touch(Position[0],Position[1])
 
-        Current_state.WaitForFriendShowReady
+        Current_state.WaitForFriendShowReady()
    
         Flag,Position = Base_func.match_template(servant+'_skill_level')
         time_limit_flag+=1
