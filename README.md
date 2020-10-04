@@ -47,6 +47,9 @@ The following is the instruction of this programme, you can use translate webpag
 
 
 ## 更新日志
+### 2020-10-4：
+1.修复了fgo_func中find_friend函数中在未寻找到指定助战英灵后进入死循环的bug(这个bug可能已经存在很久了，但去年可能人品比较好一直没出问题，只需将110行的WaitForFriendShowReady方法后面加个括号就行了)
+
 ### 2020-9-4：
 1.新增了御主礼装文件，可以在该文件中定义御主礼装的功能，将函数传入FGO_func中的Master_skill函数中即可快速实现礼装切换，无需大量修改代码
 
