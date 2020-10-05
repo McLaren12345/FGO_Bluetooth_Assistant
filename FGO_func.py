@@ -94,7 +94,7 @@ def apple_feed():
 def find_friend(servant):       
     Current_state.WaitForFriendShowReady()
     
-    Flag,Position = Base_func.match_template(servant+'_skill_level')
+    Flag,Position = Base_func.match_template(servant+'_skill_level',False,0.9)
     time_limit_flag = 1
     #找310CBA直到找到为止
     while bool(1-Flag):
@@ -109,7 +109,7 @@ def find_friend(servant):
 
         Current_state.WaitForFriendShowReady()
    
-        Flag,Position = Base_func.match_template(servant+'_skill_level')
+        Flag,Position = Base_func.match_template(servant+'_skill_level',False,0.9)
         time_limit_flag+=1
         
     if Flag:
