@@ -126,10 +126,10 @@ def quit_battle():
         Flag,Position = Base_func.match_template('Battlefinish_sign')
         if Flag:
             break
-        Flag,Position = Base_func.match_template('Master_face')
+        Flag,Position = Base_func.match_template('Attack_button')
         if Flag:
             break
-    Flag,Position = Base_func.match_template('Master_face')
+    Flag,Position = Base_func.match_template('Attack_button')
     if Flag:
         print(' 翻车，需要人工处理')          #翻车检测
         Serial.mouse_set_zero()
