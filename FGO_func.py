@@ -11,6 +11,7 @@ import random
 sys.path.append(r'F:\FGO_Project') 
 import Serial 
 import Base_func
+#import Base_func_wormhole as Base_func
 import Mystic_Codes
 from Notice import sent_message
 
@@ -45,6 +46,10 @@ class state:
 
 Current_state = state()
 
+num_Craft = 0
+num_GoldApple_used = 0
+num_SilverApple_used = 0
+
 def enter_battle():    
     Current_state.HasBackToMenu()
         #确认已经返回菜单界面，或检测到连续出击按键
@@ -66,6 +71,7 @@ def enter_battle():
         print(' Enter battle by clicking the default position')
     
 def apple_feed(): 
+    global num_GoldApple_used, num_SilverApple_used
     time.sleep(1.5)
     Flag,Position = Base_func.match_template('AP_recover')
     if Flag:
@@ -74,7 +80,8 @@ def apple_feed():
             Serial.touch(709,Position[1])
             time.sleep(1.5)            
             Flag,Position = Base_func.match_template('Feedapple_decide')
-            Serial.touch(Position[0],Position[1])           
+            Serial.touch(Position[0],Position[1])
+            num_SilverApple_used += 1
             print(' Feed silver apple success')
         else:
             Flag,Position = Base_func.match_template('Gold_apple')
@@ -82,7 +89,8 @@ def apple_feed():
                 Serial.touch(709,Position[1])
                 time.sleep(1.5)                
                 Flag,Position = Base_func.match_template('Feedapple_decide')
-                Serial.touch(Position[0],Position[1])                
+                Serial.touch(Position[0],Position[1])  
+                num_GoldApple_used += 1
                 print(' Feed gold apple success')
             else:
                 print(' No apple remain')
@@ -119,7 +127,30 @@ def find_friend(servant):
         Serial.touch(1005,570)       
         print(' Start battle button pressed')
         
+def budao():
+    while True:
+        while True:
+            time.sleep(1)
+            Flag,Position = Base_func.match_template('Battlefinish_sign')
+            if Flag:
+                break
+            Flag,Position = Base_func.match_template('Attack_button')
+            if Flag:
+                break
+        Flag,Position = Base_func.match_template('Attack_button')
+        if Flag:
+            Serial.touch(960,510)   #点击attack按钮 
+            time.sleep(1)       
+            Card_index = random.sample(range(0,4),3) #随机三张牌   
+            Serial.touch(115+(Card_index[0])*215,430)          
+            Serial.touch(115+(Card_index[1])*215,430)  
+            Serial.touch(115+(Card_index[2])*215,430)
+            print(' Card has pressed')        
+        else:
+            break
+        
 def quit_battle():
+    global num_Craft
     time.sleep(15)
     while True:
         time.sleep(1)
@@ -131,15 +162,16 @@ def quit_battle():
             break
     Flag,Position = Base_func.match_template('Attack_button')
     if Flag:
-        print(' 翻车，需要人工处理')          #翻车检测
-        Serial.mouse_set_zero()
-        sent_message(text='【FGO】: Encounter a battle error.')        
-        sys.exit(0)
+        print(' 翻车，进入补刀程序')          #翻车检测
+        #Serial.mouse_set_zero()
+        #sent_message(text='【FGO】: Encounter a battle error.')        
+        budao()
     print(' Battle finished')
     time.sleep(1)
     Flag,Position = Base_func.match_template('Rainbow_box')  #检测是否掉礼装，若掉落则短信提醒
     if Flag:
         sent_message()
+        num_Craft += 1
     Serial.touch(986,565,6)    
     Serial.touch(235,525,2)                #拒绝好友申请
     Serial.mouse_set_zero()         #鼠标复位,防止误差累积
@@ -213,7 +245,8 @@ def FGO_process(times=1,servant='CBA'):
         battle()        
         quit_battle()                
         print(' ')
-        print(' {}times of battles remain'.format(times))
+        print(' {}times of battles remain.'.format(times))
+        print(' Currently {} Gold Apples, {} Silver Apples used, {} Crafts droped.'.format(num_GoldApple_used,num_SilverApple_used,num_Craft))
       
 def main(port_no,times=1,servant='CBA'):
     Serial.port_open(port_no)   #写入通讯的串口号
