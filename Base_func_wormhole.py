@@ -9,18 +9,24 @@ import cv2 as cv
 import numpy as np
 import win32gui, win32ui, win32con, win32api
 import sys
-sys.path.append(r'F:\FGO_Project')
+sys.path.append(r'D:\Software\FGO_Project')
 from Notice import sent_message
 
-wormhole_name = "Wormhole(Cai’s iPhone)"
+phone = "iPhone12"
 
-def init_wormhole():
-    hwnd = win32gui.FindWindow("Qt5QWindowIcon",wormhole_name) # 窗口
-    win32gui.SetWindowPos(hwnd,win32con.HWND_BOTTOM,0,0,1122,649,0)
+config = {"iPhone6":{"name":"Wormhole(Cai’s iPhone)","length":1122,"bias":0},
+          "iPhone12":{"name":"Wormhole(Cai的iPhone)","length":1357,"bias":117}}
+
+global_position = win32api.GetSystemMetrics(win32con.SM_CXSCREEN) - \
+                    (config[phone]["length"] - config[phone]["bias"] - 21)
+
+def init_wormhole(phone:str="iPhone6"):
+    hwnd = win32gui.FindWindow("Qt5QWindowIcon",config[phone]["name"]) # 窗口
+    win32gui.SetWindowPos(hwnd,win32con.HWND_TOPMOST,global_position,0,config[phone]["length"],649,0)
 
 class Fuse:
     def __init__(self):
-        init_wormhole()
+        init_wormhole(phone)
         self.value = 0
         self.tolerant_time = 50     #截取50张图片后仍未发现对应目标则报错
                                     #防止程序死在死循环里    
@@ -38,7 +44,7 @@ fuse = Fuse()
 
 def match_template(filename,show_switch=False,err=0.85):
     fuse.increase()    
-    temppath = 'F:/FGO_Project/Template/' + filename+'.jpg'
+    temppath = 'D:/Software/FGO_Project/Template/' + filename+'.jpg'
     img = window_capture()
     #img = cv.imread(imgpath)
     player_template = cv.imread(temppath)
@@ -69,7 +75,7 @@ def match_template(filename,show_switch=False,err=0.85):
     
 
 def window_capture():
-    hwnd = win32gui.FindWindow("Qt5QWindowIcon",wormhole_name) # 窗口
+    hwnd = win32gui.FindWindow("Qt5QWindowIcon",config[phone]["name"]) # 窗口
     # 根据窗口句柄获取窗口的设备上下文DC（Divice Context）
     hwndDC = win32gui.GetWindowDC(hwnd)
     #获取句柄窗口的大小信息
@@ -98,8 +104,8 @@ def window_capture():
 
     #img = cv.imread(filename)
     #截取出ios屏幕区域
-    cropped = img[16:height-26, 21:width-21]  # 裁剪坐标为[y0:y1, x0:x1]
-    #cv.imwrite('F:/FGO_Project/Template/1.jpg', cropped)
+    cropped = img[16:height-26, (21+config[phone]["bias"]):width-(21+config[phone]["bias"])]  # 裁剪坐标为[y0:y1, x0:x1]
+    #cv.imwrite('D:/Software/FGO_Project/Template/1.jpg', cropped)
     win32gui.DeleteObject(saveBitMap.GetHandle()) #释放内存
     saveDC.DeleteDC()
     mfcDC.DeleteDC()
