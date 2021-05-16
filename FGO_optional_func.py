@@ -6,13 +6,14 @@ Created on Sun Jan 19 20:17:33 2020
 """
 
 import sys
-sys.path.append(r'F:\FGO_Project') 
-import Serial
+sys.path.append(r'D:\Software\FGO_Project')
+import Serial_wormhole as Serial 
+#import Serial
 import time
 
 #无限池抽取函数
 def InfinatePool():
-    Serial.port_open('com5')
+    Serial.port_open('com3')
     Serial.mouse_set_zero()
     Serial.mouse_move((320,360))
     for i in range(100):
@@ -20,25 +21,25 @@ def InfinatePool():
 
 #友情池抽取函数
 def FriendPointSummon():
-    Serial.port_open('com5')
+    Serial.port_open('com3')
     time.sleep(0.5)
     
     Serial.mouse_set_zero()
 
     Serial.touch(540,472)
     
-    Serial.touch(707,480,2)
+    Serial.touch(702,480,2)
     time.sleep(1)
     Serial.touch(647,570,8)    
         
     while True:
-        Serial.touch(707,480,1)
+        Serial.touch(702,480,1)
         time.sleep(1)
         Serial.touch(647,570,7)
     
 #搓丸子
 def MakeCraftEssenceEXCard():
-    Serial.port_open('com5')
+    Serial.port_open('com3')
     Serial.mouse_set_zero()
     
     while True:
