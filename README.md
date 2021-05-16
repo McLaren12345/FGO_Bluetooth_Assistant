@@ -120,9 +120,9 @@ The following is the instruction of this programme, you can use translate webpag
 ### 文件概述：
 0.ReadMe文件夹中的`ReadMe.pdf`文件有模块的淘宝地址以及使用概述
 
-1.`Base_func.py`中定义了游戏图像截取以及模板匹配函数
+1.`Base_func.py`中定义了游戏图像截取以及模板匹配函数，`Base_func_wormhole.py`为虫洞版本的识图驱动
 
-2.`Serial.py`中定义了蓝牙鼠标通讯函数(感谢B站玩家@lsq5i5j_提供的相关代码)
+2.`Serial.py`中定义了蓝牙鼠标通讯函数(感谢B站玩家@lsq5i5j_提供的相关代码)，`Serial_wormhole.py`为虫洞版本的鼠标驱动
 
 3.`FGO_func.py`定义了FGO的相关函数，包括主程序(可在程序中的battle函数里直接修改战斗脚本)
 
