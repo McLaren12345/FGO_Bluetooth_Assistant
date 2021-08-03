@@ -4,9 +4,12 @@ Created on Fri Sep  4 22:46:30 2020
 
 @author: McLaren
 """
+
 import sys
-sys.path.append(r'F:\FGO_Project') 
-import Serial
+import Serial_wormhole as Serial
+import Global_Config as gc   #added
+
+sys.path.append(gc.default_dir) 
 
 #换人服
 def Chaldea_Combat_Uniform(*args):

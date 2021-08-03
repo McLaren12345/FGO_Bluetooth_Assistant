@@ -6,18 +6,20 @@ Created on Sun Jan 19 20:17:33 2020
 """
 
 import sys
-sys.path.append(r'C:\Users\Paul\Desktop\Modified')
 import Serial_wormhole as Serial 
 import time
 import Base_func_wormhole as Base_func
-import pyautogui as ag
+#import pyautogui as ag
+import Global_Config as gc
+
+sys.path.append(gc.default_dir) 
 
 
+fuse = Base_func.Fuse()
 
-
+'''
 #无限池抽取函数
 def InfinatePool():
-    Serial.port_open('com3')
     Serial.mouse_set_zero()
     Serial.mouse_move((320,360))
     for i in range(100):
@@ -30,11 +32,7 @@ def getpos():
     px = orgpos[0] - zero_x
     py = orgpos[1] - zero_y
     return (px, py)
-
-
-
-fuse = Base_func.Fuse()
-
+'''
 
 def main_click_menu():                  #主菜单
     Serial.touch(995,575)               
@@ -72,47 +70,47 @@ def full_click_sell():                  #背包已满提示：贩卖
     Serial.touch(295,400)               
     time.sleep(1)
 
-def upgrade_click_filter():
-    Serial.touch(820,110) #filter
+def upgrade_click_filter():             #礼装/从者界面：筛选
+    Serial.touch(820,110) 
     time.sleep(0.5)
     
-def filter_click_default():
-    Serial.touch(375,465) #back to default
+def filter_click_default():             #筛选：回到初始设定
+    Serial.touch(375,465) 
     time.sleep(0.2)
 
-def essencefilter_click_rareness(starnum):
-    Serial.touch((855-(starnum-1)*155),220) #155为间隔，此数值有待进一步精确确认
+def essencefilter_click_rareness(starnum):  #礼装选择界面：稀有度
+    Serial.touch((855-(starnum-1)*155),220) #155为选项间隔，此数值有待进一步精确确认
     time.sleep(0.2)
     
-def servantfilter_click_type(type_name):
-    if type_name == 'Servant':
-        Serial.touch(360,240) #servant only
+def servantfilter_click_type(type_name):    #从者选择界面：类型
+    if type_name == "Servant":
+        Serial.touch(360,240) #从者
         time.sleep(0.2)
-    elif type_name == 'Exp':
-        Serial.touch(540,240) #Exp
+    elif type_name == "Exp":
+        Serial.touch(540,240) #经验值
         time.sleep(0.2)
-    elif type_name == 'FuFu':
-        Serial.touch(720,240) #FuFu
+    elif type_name == "FuFu":
+        Serial.touch(720,240) #芙芙
         time.sleep(0.2) 
     else:
-        print('unkown type')
+        print("unkown type")
         
-def filter_click_apply():
-    Serial.touch(700,535) #apply
+def filter_click_apply():               #筛选：决定
+    Serial.touch(700,535)
     time.sleep(0.5)
     
-def upgrade_click_order():
-    Serial.touch(945,110) #Order Icon
+def upgrade_click_order():              #礼装/从者界面：顺序类型
+    Serial.touch(945,110) 
     time.sleep(0.5)
   
-def order_smartfilterOn(OnOffBool):
-    Flag,Position = Base_func.match_template('SmartFilterOff')    
+def order_smartfilterOn(OnOffBool):     #顺序类型：智能筛选
+    Flag,Position = Base_func.match_template("SmartFilterOff")    
     if (Flag and OnOffBool) or (not(Flag) and not(OnOffBool)): #smart filter now off, and we need it on
         Serial.touch(485,395) #turn on/off smart filter
         time.sleep(0.2)    
 
-def upgrade_ascend(UpDownBool):
-    Flag,Position = Base_func.match_template('DownOrder')
+def upgrade_ascend(UpDownBool):         #礼装/从者界面：升降序
+    Flag,Position = Base_func.match_template("DownOrder")
     if (Flag and UpDownBool) or (not(Flag) and not(UpDownBool)): #descending order now, we need the opposite
         Serial.touch(Position[0],Position[1]) #change to ascending order
         time.sleep(0.5)
@@ -120,15 +118,15 @@ def upgrade_ascend(UpDownBool):
 
 #友情池1次抽取
 def FriendPointSummon(delay=0):   
-    Flag,Position = Base_func.match_template('Continue') #是否有继续10连按钮
+    Flag,Position = Base_func.match_template("Continue") #是否有继续10连按钮
     if not(Flag):       #无按钮  
-        Flag,Position = Base_func.match_template('FreeSummon') 
+        Flag,Position = Base_func.match_template("FreeSummon") 
         if Flag:        #免费友情点10连
             Serial.touch(540,472)            
         else:           #付费友情点10连
             Serial.touch(702,480)
             
-    Flag,Position = Base_func.match_template('BoxFull')  
+    Flag,Position = Base_func.match_template("BoxFull")  
     if Flag:            #背包满
         return Flag,Position
     
@@ -136,41 +134,41 @@ def FriendPointSummon(delay=0):
     Serial.touch(702,480)   #决定，开始召唤
     time.sleep(1+delay)     #依据网络状况改动，delay为第一次召唤的额外加载时间
     Serial.touch(647,570,6) #速点      
-    Flag,Position = Base_func.match_template('BoxFull')
+    Flag,Position = Base_func.match_template("BoxFull")
     return Flag,Position    
 
 
 #满背包的类型判断，可为从者、礼装、纹章
 def FullBoxType():
-    Flag, Position = Base_func.match_template('ServantFull')
+    Flag, Position = Base_func.match_template("ServantFull")
     if Flag:
-        return 'Servant'
-    Flag, Position = Base_func.match_template('EssenceFull')
+        return "Servant"
+    Flag, Position = Base_func.match_template("EssenceFull")
     if Flag:
-        return 'Essence'
-    return 'Heraldry'   #need further development
+        return "Essence"
+    return "Heraldry"   #need further development
    
 
-
+#筛选、排序礼装，使狗粮礼装排在前
 def Filter_Order_change(filteredObject, smartfilter_on, ascending_order):  
     upgrade_click_filter()
     filter_click_default()    
-    if (filteredObject == 'Essence'):
+    if (filteredObject == "Essence"):
         essencefilter_click_rareness(2)
         essencefilter_click_rareness(1)
-    elif (filteredObject == 'Servant'):
+    elif (filteredObject == "Servant"):
         Serial.mouse_swipe((955,205),(955,505),0.5) #scroll to bottom
         time.sleep(0.5)
-        servantfilter_click_type('Servant')
-    elif (filteredObject == 'ExpFuFu'):
+        servantfilter_click_type("Servant")
+    elif (filteredObject == "ExpFuFu"):
         Serial.mouse_swipe((955,205),(955,505),0.5) #scroll to bottom
         time.sleep(0.5)
-        servantfilter_click_type('Exp')
-        servantfilter_click_type('FuFu')              
+        servantfilter_click_type("Exp")
+        servantfilter_click_type("FuFu")              
     filter_click_apply()
           
     upgrade_click_order()
-    if (filteredObject == 'Essence'):
+    if (filteredObject == "Essence"):
         Serial.touch(270,200) #level order, hard coded
     else:
         Serial.touch(270,325) #rareness order
@@ -180,16 +178,16 @@ def Filter_Order_change(filteredObject, smartfilter_on, ascending_order):
     upgrade_ascend(ascending_order)
         
 
-
+#贩卖所有友情池抽取的从者
 def clear_servants():
-    Filter_Order_change('Servant', True, True)
+    Filter_Order_change("Servant", True, True)
     
-    Flag,Position = Base_func.match_template('Dense')     
+    Flag,Position = Base_func.match_template("Dense")     
     while not(Flag):
         fuse.increase()
         Serial.touch(30,568)
         time.sleep(1)
-        Flag,Position = Base_func.match_template('Dense')
+        Flag,Position = Base_func.match_template("Dense")
         fuse.alarm()
     fuse.reset()
     
@@ -202,8 +200,9 @@ def clear_servants():
     time.sleep(1)
 
 
-def lock():     #检查上锁情况，如果没有上锁则自动上锁
-    Locked, Position = Base_func.match_template('Lock')
+#检查丸子上锁情况，如果没有上锁则自动上锁
+def lock():     
+    Locked, Position = Base_func.match_template("Lock")
     if not(Locked):
         Serial.touch(25,300)   #点击统一锁定
         time.sleep(0.5)
@@ -211,9 +210,11 @@ def lock():     #检查上锁情况，如果没有上锁则自动上锁
         time.sleep(0.5)
         Serial.touch(25,205)   #点击选择对象
         time.sleep(0.5)
-        
-def maxlvl_check():  #检查是否满级，是则重新选择
-    Maxlvl, Position = Base_func.match_template('Maxlvl')
+
+
+#检查丸子是否满级        
+def maxlvl_check():  
+    Maxlvl, Position = Base_func.match_template("Maxlvl")
     if Maxlvl:
         # Serial.touch(166,340) #选择需要强化的礼装
         # time.sleep(0.5)
@@ -223,11 +224,12 @@ def maxlvl_check():  #检查是否满级，是则重新选择
         return True
     return False
 
+#选择需要强化的丸子礼装
 def essence_choose():
     Serial.touch(166,340) #选择需要强化的礼装
     time.sleep(1)
     lock()
-    Serial.touch(120,215) #first
+    Serial.touch(120,215) #默认选择第一个
     time.sleep(1)
         
 
@@ -239,7 +241,7 @@ def Upgrade():
     time.sleep(0.2)
     Serial.touch(990,570)
     time.sleep(1)    
-    InterfaceSign, Positiion = Base_func.match_template('UpgradeInterface') 
+    InterfaceSign, Positiion = Base_func.match_template("UpgradeInterface") 
     if not(InterfaceSign):      #没能回到强化界面，没有剩余材料了
         return True  
     Serial.touch(990,570)
@@ -248,25 +250,25 @@ def Upgrade():
     return False
 
 
-#搓丸子直到材料耗尽或者达到目标
+#搓丸子直到材料耗尽或者达到指定目标
 def MaxLevelMaterial(finished, target):
     Serial.touch(166,340) #选择需要强化的礼装
     time.sleep(1)
-    Filter_Order_change('Essence', True, False) #筛选及调整顺序        
+    Filter_Order_change("Essence", True, False) #筛选及调整顺序        
     lock()                                      #上锁第一个
     Serial.touch(120,215)                       #选定第一个
     time.sleep(1)
     
     Serial.touch(720,280)                       #选择材料
     time.sleep(1)
-    Filter_Order_change('Essence', False, True) #筛选及调整顺序
+    Filter_Order_change("Essence", False, True) #筛选及调整顺序
     time.sleep(0.2)
     Serial.mouse_swipe((125,210),(125,580),0.5) #batch selection 
     Serial.touch(990,570,4)                     #确定材料，确定强化
     time.sleep(0.2)
     Serial.touch(720,507,10)                    #确定以及速点
         
-    #maxlvl_bool = maxlvl_check()                           #满级重新选择
+                                                  #满级重新选择
     if maxlvl_check():
         finished += 1     
         if finished == target:
@@ -278,7 +280,6 @@ def MaxLevelMaterial(finished, target):
     empty = False
     while not(empty):                           #重复升级至材料耗尽或到达指定目标数量
         empty = Upgrade()
-        # maxlvl_bool = maxlvl_check()
         if maxlvl_check():                         #完成了一个大丸子
             finished += 1
             if finished == target:
@@ -292,23 +293,25 @@ def MaxLevelMaterial(finished, target):
         
 
         
-#全自动搓丸子。。。
+#全自动搓50级丸子，参数为所需丸子个数，进入友情池界面以开始
 #(1479,16)
 def FullAutoEXCards(cardnum):   
-    Flag,Position = Base_func.match_template('FriendPointSummon',False, 0.95)
+    Flag,Position = Base_func.match_template("FriendPointSummon",False, 0.95)
     if not(Flag):
         print("Please enter summon interface")
         sys.exit(0)
     
     finished = 0
-    print("Start clicking in 10 seconds, please leave the mouse in a stable position")
+    print("Program starts in 10 seconds, please leave your mouse")
     time.sleep(10)
     print("Program starts!")
+    time.sleep(1)
+    
     
     while (finished < cardnum):      
         print("Friend Point Summon Icon Found")
        
-        #第一次召唤需要加载，所以加入1.5秒延迟
+        #第一次召唤需要加载，所以加入2.5秒延迟
         full, Position = FriendPointSummon(2.5)
         
         #重复召唤直到满背包
@@ -318,7 +321,7 @@ def FullAutoEXCards(cardnum):
         fullType = FullBoxType() 
         time.sleep(1)
                     
-        if fullType == 'Essence':                  #概念礼装满
+        if fullType == "Essence":                  #概念礼装满
             full_click_enhance()
             finished = MaxLevelMaterial(finished, cardnum)
             main_click_exit()
@@ -327,7 +330,7 @@ def FullAutoEXCards(cardnum):
             store_click_sell()
             clear_servants()
             main_click_exit()       
-        elif fullType == 'Servant':                #从者满
+        elif fullType == "Servant":                #从者满
             full_click_sell()
             clear_servants()
             main_click_exit()
@@ -337,7 +340,7 @@ def FullAutoEXCards(cardnum):
             finished = MaxLevelMaterial(finished, cardnum)
             main_click_exit()    
         else:
-            print('heraldry full')                 #纹章满
+            print("heraldry full")                 #纹章满
             sys.exit(0)
         
         main_click_menu()
@@ -346,17 +349,19 @@ def FullAutoEXCards(cardnum):
         while not(Flag):
             Serial.touch(45,305)
             time.sleep(0.5)
-            Flag,Position = Base_func.match_template('FriendPointSummon',False, 0.95)
-        print('%d Max-Level EXCard Finished' % finished)
+            Flag,Position = Base_func.match_template("FriendPointSummon",False, 0.95)
+        print("%d Max-Level EXCard Finished" % finished)
         
-    print('ALL DONE!')
+    print("ALL DONE!")
+
+
             
 def main():
-    Base_func.init_wormhole("iPhone12")
-    FullAutoEXCards(1)
+    Base_func.init_wormhole()
+    FullAutoEXCards(1)                  #参数在这里改！！！！！！！！
     
 
-if __name__=='__main__':
+if __name__=="__main__":
     main()
     
 
@@ -368,8 +373,4 @@ if __name__=='__main__':
 5丸子满级，未耗尽材料，但第一个材料位置不足5个导致无法满破而影响升满50级
 6背包内由于有过多种火和芙芙导致无法继续召唤
 7素材较少无法批量选中，只能选中一个
-
-
-1星满破240，6级全部2星狗粮升级为3k量子
-
 '''

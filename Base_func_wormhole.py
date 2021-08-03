@@ -9,35 +9,20 @@ import cv2 as cv
 import numpy as np
 import win32gui, win32ui, win32con
 import sys
-sys.path.append(r'C:\Users\Paul\Desktop\Modified')
 import Global_Config as gc
 #from Notice import sent_message
 
-'''
-phone = "iPhone12"
-
-config = {"iPhone6":{"name":"Wormhole(iPhone)","length":1122,"bias":0},
-          "iPhone12":{"name":"Wormhole(Paul)","length":1357,"bias":117}}
-
-global_position = win32api.GetSystemMetrics(win32con.SM_CXSCREEN) - \
-                    (config[phone]["length"] - config[phone]["bias"] - 21)
-'''
-
-#added
-phone = gc.const_phone
-config = gc.const_config
-global_position = gc.const_position
+sys.path.append(gc.default_dir) 
 
 
-
-def init_wormhole(phone="iPhone6"):
-    hwnd = win32gui.FindWindow("Qt5QWindowIcon",config[phone]["name"]) # 窗口
-    win32gui.SetWindowPos(hwnd,win32con.HWND_TOPMOST,global_position,0,config[phone]["length"],649,0)
+def init_wormhole():
+    hwnd = win32gui.FindWindow("Qt5QWindowIcon",gc.config[gc.const_phone]["name"]) # 窗口
+    win32gui.SetWindowPos(hwnd,win32con.HWND_TOPMOST,gc.const_position,0,gc.config[gc.const_phone]["length"],649,0)
     
 
 class Fuse:
     def __init__(self):
-        init_wormhole(phone)
+        init_wormhole(gc.const_phone)
         self.value = 0
         self.tolerant_time = 50     #截取50张图片后仍未发现对应目标则报错
                                     #防止程序死在死循环里    
@@ -50,15 +35,14 @@ class Fuse:
     def alarm(self):
         if self.value >= self.tolerant_time:
             #sent_message(text='【FGO】: Encounter a fuse error.')
-            print("Error occured")
+            print("Fuse Error!")
             sys.exit(0)
-
-#fuse = Fuse()
+            
 
 def match_template(filename,show_switch=False,err=0.85):
     #fuse.increase() 
     #print('\nFuse value now: %d' % fuse.value)###########################################
-    temppath = 'C:/Users/Paul/Desktop/Modified/Template/' + filename+'.jpg'
+    temppath = gc.template_path_str + filename+".jpg"
     img = window_capture()
     #cv.imshow("Image", img) #for testing
     #img = cv.imread(imgpath)
@@ -75,7 +59,7 @@ def match_template(filename,show_switch=False,err=0.85):
         if show_switch:
             cv.circle(img, player_spot, 10, (0, 255, 255), -1)
             cv.rectangle(img, max_loc, corner_loc, (0, 0, 255), 3)
-            cv.namedWindow('FGO_MatchResult', cv.WINDOW_KEEPRATIO)
+            cv.namedWindow("FGO_MatchResult", cv.WINDOW_KEEPRATIO)
             cv.imshow("FGO_MatchResult", img)
         #显示结果2秒钟
             k = cv.waitKey(1000)
@@ -90,7 +74,7 @@ def match_template(filename,show_switch=False,err=0.85):
     
 
 def window_capture():
-    hwnd = win32gui.FindWindow("Qt5QWindowIcon",config[phone]["name"]) # 窗口
+    hwnd = win32gui.FindWindow("Qt5QWindowIcon",gc.config[gc.const_phone]["name"]) # 窗口
     # 根据窗口句柄获取窗口的设备上下文DC（Divice Context）
     hwndDC = win32gui.GetWindowDC(hwnd)
     #获取句柄窗口的大小信息
@@ -113,13 +97,13 @@ def window_capture():
     #saveBitMap.SaveBitmapFile(saveDC, filename)
     
     signedIntsArray = saveBitMap.GetBitmapBits(True)
-    img = np.frombuffer(signedIntsArray, dtype = 'uint8')
+    img = np.frombuffer(signedIntsArray, dtype = "uint8")
     img.shape = (height, width, 4)
     img = cv.cvtColor(img, cv.COLOR_RGBA2RGB)
 
     #img = cv.imread(filename)
     #截取出ios屏幕区域
-    cropped = img[16:height-26, (21+config[phone]["bias"]):width-(21+config[phone]["bias"])]  # 裁剪坐标为[y0:y1, x0:x1]
+    cropped = img[16:height-26, (21+gc.config[gc.const_phone]["bias"]):width-(21+gc.config[gc.const_phone]["bias"])]  # 裁剪坐标为[y0:y1, x0:x1]
     #cv.imwrite('C:/Users/Paul/Desktop/test/3.jpg', cropped) #for testing
     
     win32gui.DeleteObject(saveBitMap.GetHandle()) #释放内存
