@@ -8,18 +8,25 @@ Created on Sun May 16 12:32:19 2021
 import sys
 import win32con, win32api
 import time
-sys.path.append(r'D:\Software\FGO_Project') 
-import Base_func_wormhole as Base_func
+sys.path.append(r'C:\Users\Paul\Desktop\Modified') 
+import Global_Config as gc   #added
 
 
+
+xy_zero = gc.const_interface_origin
+
+'''
 xy_zero = (Base_func.global_position+21+Base_func.config[Base_func.phone]["bias"], 0+16)    
 #投屏界面的像素位置(1080,607)
+'''
 
+'''
 def port_open(port_no):
     pass
 
 def port_close():
     pass
+'''
 
 def mouse_click():
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN,0,0,0,0)

@@ -9,17 +9,18 @@ import sys
 from tqdm import tqdm
 import random
 sys.path.append(r'F:\FGO_Project') 
-import Serial 
-import Base_func
-#import Base_func_wormhole as Base_func
+import Serial_wormhole as Serial 
+#import Base_func
+import Base_func_wormhole as Base_func
 import Mystic_Codes
-from Notice import sent_message
+#from Notice import sent_message
 
 class state:
     def HasBackToMenu(self):
         Flag,Position = Base_func.match_template('Menu_button')
+        print('Flag now: ', Flag, "Position now: ", Position )
         while bool(1-Flag):
-            time.sleep(1)       
+            time.sleep(0.1)       ############### Original value is 1
             Flag,Position = Base_func.match_template('Menu_button')
             if Flag:
                 break
@@ -50,7 +51,7 @@ num_Craft = 0
 num_GoldApple_used = 0
 num_SilverApple_used = 0
 
-def enter_battle():    
+def enter_battle():   
     Current_state.HasBackToMenu()
         #确认已经返回菜单界面，或检测到连续出击按键
     Flag,Position = Base_func.match_template('reenter_battle') 
@@ -99,10 +100,10 @@ def apple_feed():
     else:
         print(' No need to feed apple')
         
-def find_friend(servant):       
+def find_friend(servant):       #test, 0.9 original
     Current_state.WaitForFriendShowReady()
     
-    Flag,Position = Base_func.match_template(servant+'_skill_level',False,0.9)
+    Flag,Position = Base_func.match_template(servant+'_skill_level',False,0.85)
     time_limit_flag = 1
     #找310CBA直到找到为止
     while bool(1-Flag):
@@ -117,7 +118,7 @@ def find_friend(servant):
 
         Current_state.WaitForFriendShowReady()
    
-        Flag,Position = Base_func.match_template(servant+'_skill_level',False,0.9)
+        Flag,Position = Base_func.match_template(servant+'_skill_level',False,0.85)
         time_limit_flag+=1
         
     if Flag:
@@ -170,7 +171,7 @@ def quit_battle():
     time.sleep(1)
     Flag,Position = Base_func.match_template('Rainbow_box')  #检测是否掉礼装，若掉落则短信提醒
     if Flag:
-        sent_message()
+        #sent_message()
         num_Craft += 1
     Serial.touch(986,565,6)    
     Serial.touch(235,525,2)                #拒绝好友申请
@@ -211,11 +212,11 @@ def battle():
     time.sleep(8)                          #等待战斗开始
     Current_state.WaitForBattleStart()    
     #time.sleep(6)                   #等待6秒，因为礼装效果掉落暴击星会耗时
+    """
     #Turn1
     character_skill(3,1,1)
     character_skill(2,1,1)
-    character_skill(1,1)
-    character_skill(1,3,1)  
+    character_skill(1,2)  
     card()
     
     #Serial.mouse_set_zero()         #鼠标复位,防止误差累积
@@ -234,6 +235,14 @@ def battle():
     #Turn3
     character_skill(3,1,1)
     character_skill(2,3,1)
+    card()
+    """
+    card()
+    time.sleep(10)
+    Current_state.WaitForBattleStart()
+    card()
+    time.sleep(10)
+    Current_state.WaitForBattleStart()
     card()
 
 def FGO_process(times=1,servant='CBA'):
@@ -256,6 +265,6 @@ def main(port_no,times=1,servant='CBA'):
     print(' All done!') 
         
 if __name__=='__main__':
-	main('com5',40)
+	main('com5',1)
 
 

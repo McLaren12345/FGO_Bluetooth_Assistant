@@ -7,22 +7,33 @@ Created on Wed Dec 11 19:50:04 2019
 
 import cv2 as cv
 import numpy as np
-import win32gui, win32ui, win32con, win32api
+import win32gui, win32ui, win32con
 import sys
-sys.path.append(r'D:\Software\FGO_Project')
-from Notice import sent_message
+sys.path.append(r'C:\Users\Paul\Desktop\Modified')
+import Global_Config as gc
+#from Notice import sent_message
 
+'''
 phone = "iPhone12"
 
-config = {"iPhone6":{"name":"Wormhole(Cai’s iPhone)","length":1122,"bias":0},
-          "iPhone12":{"name":"Wormhole(Cai的iPhone)","length":1357,"bias":117}}
+config = {"iPhone6":{"name":"Wormhole(iPhone)","length":1122,"bias":0},
+          "iPhone12":{"name":"Wormhole(Paul)","length":1357,"bias":117}}
 
 global_position = win32api.GetSystemMetrics(win32con.SM_CXSCREEN) - \
                     (config[phone]["length"] - config[phone]["bias"] - 21)
+'''
 
-def init_wormhole(phone:str="iPhone6"):
+#added
+phone = gc.const_phone
+config = gc.const_config
+global_position = gc.const_position
+
+
+
+def init_wormhole(phone="iPhone6"):
     hwnd = win32gui.FindWindow("Qt5QWindowIcon",config[phone]["name"]) # 窗口
     win32gui.SetWindowPos(hwnd,win32con.HWND_TOPMOST,global_position,0,config[phone]["length"],649,0)
+    
 
 class Fuse:
     def __init__(self):
@@ -37,15 +48,19 @@ class Fuse:
         self.value = 0
         
     def alarm(self):
-        if self.value == self.tolerant_time:
-            sent_message(text='【FGO】: Encounter a fuse error.')
+        if self.value >= self.tolerant_time:
+            #sent_message(text='【FGO】: Encounter a fuse error.')
+            print("Error occured")
+            sys.exit(0)
 
-fuse = Fuse()
+#fuse = Fuse()
 
 def match_template(filename,show_switch=False,err=0.85):
-    fuse.increase()    
-    temppath = 'D:/Software/FGO_Project/Template/' + filename+'.jpg'
+    #fuse.increase() 
+    #print('\nFuse value now: %d' % fuse.value)###########################################
+    temppath = 'C:/Users/Paul/Desktop/Modified/Template/' + filename+'.jpg'
     img = window_capture()
+    #cv.imshow("Image", img) #for testing
     #img = cv.imread(imgpath)
     player_template = cv.imread(temppath)
     player = cv.matchTemplate(img, player_template, cv.TM_CCOEFF_NORMED)
@@ -67,10 +82,10 @@ def match_template(filename,show_switch=False,err=0.85):
             if k==-1:
                 cv.destroyAllWindows()
         
-        fuse.reset()
+        #fuse.reset()
         return True, player_spot
     else:        
-        fuse.alarm()
+        #fuse.alarm()
         return False, 0
     
 
@@ -105,7 +120,8 @@ def window_capture():
     #img = cv.imread(filename)
     #截取出ios屏幕区域
     cropped = img[16:height-26, (21+config[phone]["bias"]):width-(21+config[phone]["bias"])]  # 裁剪坐标为[y0:y1, x0:x1]
-    #cv.imwrite('D:/Software/FGO_Project/Template/1.jpg', cropped)
+    #cv.imwrite('C:/Users/Paul/Desktop/test/3.jpg', cropped) #for testing
+    
     win32gui.DeleteObject(saveBitMap.GetHandle()) #释放内存
     saveDC.DeleteDC()
     mfcDC.DeleteDC()
