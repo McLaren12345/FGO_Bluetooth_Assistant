@@ -70,11 +70,6 @@ def WaitForFriendShowReady():
         fuse.alarm()
     fuse.reset()
 
-
-num_Craft = 0
-num_GoldApple_used = 0
-num_SilverApple_used = 0
-        
     
 def apple_feed(): 
     
@@ -262,7 +257,7 @@ def FGO_process(times=1,servant="CBA"):
         quit_battle()                
         print(" ")
         print(" {}times of battles remain.".format(times))
-        print(" Currently {} Gold Apples, {} Silver Apples used, {} Crafts droped.".format(num_GoldApple_used,num_SilverApple_used,num_Craft))
+        print(" Currently {} Gold Apples, {} Silver Apples used, {} Crafts droped.".format(gc.num_GoldApple_used,gc.num_SilverApple_used,gc.num_Craft))
       
 def main():
     #Serial.port_open(port_no)   #写入通讯的串口号

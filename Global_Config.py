@@ -23,7 +23,9 @@ const_position = win32api.GetSystemMetrics(win32con.SM_CXSCREEN) - \
 const_interface_origin = (const_position+21+config[const_phone]["bias"], 0+16)
 
 
-num_GoldApple_used = num_SilverApple_used = num_Craft = 0
+num_GoldApple_used = 0
+num_SilverApple_used = 0
+num_Craft = 0
 
 
 
