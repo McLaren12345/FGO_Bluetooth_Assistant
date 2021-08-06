@@ -28,6 +28,11 @@ num_SilverApple_used = 0
 num_Craft = 0
 
 
+enhancedFilterInit_bool = True
+materialFilterInit_bool = True
+servantFilterInit_bool = True
+
+
 
 #请修改变量default_dir，template_path_str，const_phone
 #default_dir为你的程序根目录

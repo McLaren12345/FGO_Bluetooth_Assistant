@@ -22,7 +22,7 @@ def init_wormhole():
 
 class Fuse:
     def __init__(self):
-        init_wormhole(gc.const_phone)
+        init_wormhole()
         self.value = 0
         self.tolerant_time = 50     #截取50张图片后仍未发现对应目标则报错
                                     #防止程序死在死循环里    

@@ -37,19 +37,23 @@ def mouse_release():
 def mouse_set_zero():
     win32api.SetCursorPos([xy_zero[0],xy_zero[1]])
 
-def mouse_move(xy_new,key=0):
+def mouse_move(xy_new,delay = 0.3):
     win32api.SetCursorPos([xy_zero[0]+xy_new[0],xy_zero[1]+xy_new[1]])
-    time.sleep(0.3)
+    time.sleep(delay)
     
 def mouse_swipe(From,To,delay=0.1):
-    mouse_move(From,key=0)
+    mouse_move(From)
     mouse_hold()
-    time.sleep(1.5)
-    mouse_move(To,key=1)
+    time.sleep(1)       #1.5 originally
+    mouse_move(To)
     time.sleep(delay)
     mouse_release()
 
-def touch(X_Position,Y_Position,times=1):
+def touch(X_Position,Y_Position,times=1,interval=0.6):
     for i in range(times):
-        mouse_move((X_Position,Y_Position))
-        mouse_click()       
+        #mouse_move((X_Position,Y_Position))
+        #mouse_click()       
+        win32api.SetCursorPos([xy_zero[0]+X_Position,xy_zero[1]+Y_Position])
+        win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN,0,0,0,0)
+        win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP,0,0,0,0)
+        time.sleep(interval)

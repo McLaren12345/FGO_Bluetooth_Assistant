@@ -9,7 +9,7 @@ import sys
 import Serial_wormhole as Serial 
 import time
 import Base_func_wormhole as Base_func
-#import pyautogui as ag
+import pyautogui as ag
 import Global_Config as gc
 
 sys.path.append(gc.default_dir) 
@@ -24,7 +24,7 @@ def InfinatePool():
     Serial.mouse_move((320,360))
     for i in range(100):
         Serial.mouse_click()
-
+'''
 def getpos():
     orgpos = ag.position()
     zero_x = 1479
@@ -32,7 +32,7 @@ def getpos():
     px = orgpos[0] - zero_x
     py = orgpos[1] - zero_y
     return (px, py)
-'''
+
 
 def main_click_menu():                  #主菜单
     Serial.touch(995,575)               
@@ -125,17 +125,23 @@ def FriendPointSummon(delay=0):
             Serial.touch(540,472)            
         else:           #付费友情点10连
             Serial.touch(702,480)
+    else:
+        Serial.touch(645,570)
             
-    Flag,Position = Base_func.match_template("BoxFull")  
-    if Flag:            #背包满
-        return Flag,Position
+    Full,Position = Base_func.match_template("BoxFull")  
+    if Full:            #背包满
+        return Full,Position
     
-    time.sleep(1)        
+    time.sleep(0.2)        
     Serial.touch(702,480)   #决定，开始召唤
     time.sleep(1+delay)     #依据网络状况改动，delay为第一次召唤的额外加载时间
-    Serial.touch(647,570,6) #速点      
-    Flag,Position = Base_func.match_template("BoxFull")
-    return Flag,Position    
+    Flag = False
+    while not(Flag):
+        #Serial.touch(647,570,5,0.1) #速点
+        Serial.touch(145,425,5,0.2) #速点
+        Flag,Position = Base_func.match_template("Continue") 
+    #Full,Position = Base_func.match_template("BoxFull")
+    return Full,Position    
 
 
 #满背包的类型判断，可为从者、礼装、纹章
@@ -180,7 +186,9 @@ def Filter_Order_change(filteredObject, smartfilter_on, ascending_order):
 
 #贩卖所有友情池抽取的从者
 def clear_servants():
-    Filter_Order_change("Servant", True, True)
+    if gc.servantFilterInit_bool:
+        Filter_Order_change("Servant", True, True)
+        gc.servantFilterInit_bool = False
     
     Flag,Position = Base_func.match_template("Dense")     
     while not(Flag):
@@ -228,16 +236,44 @@ def maxlvl_check():
 def essence_choose():
     Serial.touch(166,340) #选择需要强化的礼装
     time.sleep(1)
+    Flag,Position = Base_func.match_template("Dense")     
+    while not(Flag):
+        fuse.increase()
+        Serial.touch(30,568)
+        time.sleep(1)
+        Flag,Position = Base_func.match_template("Dense")
+        fuse.alarm()
+    fuse.reset()
     lock()
     Serial.touch(120,215) #默认选择第一个
     time.sleep(1)
+
+
+def material_select():
+    Serial.mouse_move((125,210))
+    Serial.mouse_hold()
+    time.sleep(1)       #1.5 originally
+    Serial.mouse_move((235,210),0.1)
+    Serial.mouse_move((345,210),0.1)
+    Serial.mouse_move((455,210),0.1)
+    Serial.mouse_move((565,210),0.1)
+    Serial.mouse_move((675,210),0.1)   
+    Serial.mouse_move((790,210),0.1)
+    
+    Serial.mouse_move((125,330),0.1)
+    Serial.mouse_move((125,450),0.1)
+    Serial.mouse_move((125,580),0.1)
+    time.sleep(0.5)
+    Serial.mouse_release()
+
         
 
 #升级丸子
 def Upgrade():
     Serial.touch(720,280)
     time.sleep(1)
-    Serial.mouse_swipe((125,210),(125,580),0.5)
+    #Serial.mouse_swipe((125,210),(125,580),0.5)
+    material_select()
     time.sleep(0.2)
     Serial.touch(990,570)
     time.sleep(1)    
@@ -254,14 +290,26 @@ def Upgrade():
 def MaxLevelMaterial(finished, target):
     Serial.touch(166,340) #选择需要强化的礼装
     time.sleep(1)
-    Filter_Order_change("Essence", True, False) #筛选及调整顺序        
+    if gc.enhancedFilterInit_bool:
+        Filter_Order_change("Essence", True, False) #筛选及调整顺序
+        gc.enhancedFilterInit_bool = False        
     lock()                                      #上锁第一个
     Serial.touch(120,215)                       #选定第一个
     time.sleep(1)
     
     Serial.touch(720,280)                       #选择材料
     time.sleep(1)
-    Filter_Order_change("Essence", False, True) #筛选及调整顺序
+    if gc.materialFilterInit_bool:
+        Filter_Order_change("Essence", False, True) #筛选及调整顺序
+        Flag,Position = Base_func.match_template("Dense")     
+        while not(Flag):                            #调整显示密度
+            fuse.increase()
+            Serial.touch(30,568)
+            time.sleep(1)
+            Flag,Position = Base_func.match_template("Dense")
+            fuse.alarm()
+        fuse.reset()
+        gc.materialFilterInit_bool = False
     time.sleep(0.2)
     Serial.mouse_swipe((125,210),(125,580),0.5) #batch selection 
     Serial.touch(990,570,4)                     #确定材料，确定强化
@@ -366,11 +414,16 @@ if __name__=="__main__":
     
 
 '''
-1Fuse 持续报错问题有待解决
+1Fuse 持续报错问题有待解决 (已解决)
 2经验值芙芙是否需要移入保管室
 3丸子50级满级后的锁定有待解决（已解决）
 4友情点不足情况仍须考虑
 5丸子满级，未耗尽材料，但第一个材料位置不足5个导致无法满破而影响升满50级
 6背包内由于有过多种火和芙芙导致无法继续召唤
-7素材较少无法批量选中，只能选中一个
+7素材较少无法批量选中，只能选中一个（已解决2）
+8召唤中闪退导致出错
+9连续召唤中出现网络波动、小安、lily导致召唤时间不同（已解决2）
+10速度优化（已解决2）
+11第一次筛选以及顺序初始化后后续强化及贩卖仍然初始化筛选的多余部分(已解决2)
+12选择强化对象界面以及选择强化材料界面，均未加入改变显示密度为最高的功能，导致可能解锁原先上锁的丸子（已解决2）
 '''
