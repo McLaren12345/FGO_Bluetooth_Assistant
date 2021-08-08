@@ -54,6 +54,9 @@ The following is the instruction of this programme, you can use translate webpag
 
 
 ## 更新日志
+### 2021-8-8:
+1.新增了C呆的技能识别模板。
+
 ### 2021-5-16:
 1.新增了适配虫洞软件的鼠标驱动文件，可以几乎完美的控制iOS 13.3以上的系统以及全面屏手机。
 
