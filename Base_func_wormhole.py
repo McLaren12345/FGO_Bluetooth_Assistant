@@ -16,6 +16,20 @@ sys.path.append(gc.default_dir)
 
 
 def init_wormhole():
+    '''
+    Initialize the wormhole window.
+    初始化虫洞软件的窗口
+    
+    
+    Parameters
+    ----------
+    None.
+
+    Returns
+    -------
+    None.
+
+    '''
     hwnd = win32gui.FindWindow("Qt5QWindowIcon",gc.config[gc.const_phone]["name"]) # 窗口
     win32gui.SetWindowPos(hwnd,win32con.HWND_TOPMOST,gc.const_position,0,gc.config[gc.const_phone]["length"],649,0)
     
@@ -40,6 +54,41 @@ class Fuse:
             
 
 def match_template(filename,show_switch=False,err=0.85):
+    '''
+    Given the file name of the template, attempts to find the portion 
+    that matchs the template and returns the result
+    尝试在截图中匹配目标模板，返回匹配的结果与具体位置
+    
+    
+    Parameters
+    ----------
+    filename : str
+        模板的无后缀文件名
+        File name of the template, without postfix
+    show_switch : bool, optional
+        Bool variable for displaying the matching image. 
+        This variable is used for debugging and shouldn't be changed otherwise.
+        The default is False.
+        是否显示匹配的图片部分。
+        此参数为测试用，正常使用时无需改动。
+        默认值为 False。
+    err : float, optional
+        Minimum rate of matching. 
+        The default is 0.85.
+        与模板的最低匹配度。
+        默认为 0.85。
+
+    Returns
+    -------
+    bool
+        The final status of matching
+        是否有图片部分与模板匹配
+    (int, int)
+        Coordinates of the center of the matching portion of the picture
+        与模板匹配的图片部分的中心坐标
+
+    '''
+    
     #fuse.increase() 
     #print('\nFuse value now: %d' % fuse.value)###########################################
     temppath = gc.template_path_str + filename+".jpg"
@@ -70,10 +119,24 @@ def match_template(filename,show_switch=False,err=0.85):
         return True, player_spot
     else:        
         #fuse.alarm()
-        return False, 0
+        return False, (-1,-1)
     
 
 def window_capture():
+    '''
+    截取整个目标窗口，返回截取的图片
+    Crop and return a picture of the entire targeted window
+    
+    Parameters
+    ----------
+    None
+    
+    Returns
+    -------
+    cropped : img
+        The cropped picture of the window 
+    '''
+    
     hwnd = win32gui.FindWindow("Qt5QWindowIcon",gc.config[gc.const_phone]["name"]) # 窗口
     # 根据窗口句柄获取窗口的设备上下文DC（Divice Context）
     hwndDC = win32gui.GetWindowDC(hwnd)

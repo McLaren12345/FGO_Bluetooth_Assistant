@@ -15,7 +15,8 @@ const_phone = "iPhone12"
 
 
 config = {"iPhone6":{"name":"Wormhole(iPhone)","length":1122,"bias":0},
-          "iPhone12":{"name":"Wormhole(Paul)","length":1357,"bias":117}}
+          "iPhone12":{"name":"Wormhole(Paul)","length":1357,"bias":117},
+          "iPadmini4":{"name":"Wormhole(iPad (2))","length":1358,"bias":117}}
 
 const_position = win32api.GetSystemMetrics(win32con.SM_CXSCREEN) - \
                     (config[const_phone]["length"] - config[const_phone]["bias"] - 21)

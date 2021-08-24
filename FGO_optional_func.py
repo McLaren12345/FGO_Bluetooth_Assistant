@@ -25,6 +25,7 @@ def InfinatePool():
     for i in range(100):
         Serial.mouse_click()
 '''
+
 def getpos():
     orgpos = ag.position()
     zero_x = 1479
@@ -132,7 +133,7 @@ def FriendPointSummon(delay=0):
     if Full:            #背包满
         return Full,Position
     
-    time.sleep(0.2)        
+    time.sleep(0.3)        
     Serial.touch(702,480)   #决定，开始召唤
     time.sleep(1+delay)     #依据网络状况改动，delay为第一次召唤的额外加载时间
     Flag = False
@@ -344,7 +345,7 @@ def MaxLevelMaterial(finished, target):
 #全自动搓50级丸子，参数为所需丸子个数，进入友情池界面以开始
 #(1479,16)
 def FullAutoEXCards(cardnum):   
-    Flag,Position = Base_func.match_template("FriendPointSummon",False, 0.95)
+    Flag,Position = Base_func.match_template("FriendPointSummon",False, 0.9)
     if not(Flag):
         print("Please enter summon interface")
         sys.exit(0)
@@ -396,8 +397,8 @@ def FullAutoEXCards(cardnum):
         Flag = False
         while not(Flag):
             Serial.touch(45,305)
-            time.sleep(0.5)
-            Flag,Position = Base_func.match_template("FriendPointSummon",False, 0.95)
+            time.sleep(1)
+            Flag,Position = Base_func.match_template("FriendPointSummon",False, 0.9)
         print("%d Max-Level EXCard Finished" % finished)
         
     print("ALL DONE!")
@@ -406,7 +407,7 @@ def FullAutoEXCards(cardnum):
             
 def main():
     Base_func.init_wormhole()
-    FullAutoEXCards(1)                  #参数在这里改！！！！！！！！
+    FullAutoEXCards(3)                  #参数在这里改！！！！！！！！
     
 
 if __name__=="__main__":
@@ -415,11 +416,11 @@ if __name__=="__main__":
 
 '''
 1Fuse 持续报错问题有待解决 (已解决)
-2经验值芙芙是否需要移入保管室
+2背包内由于有过多种火和芙芙导致无法继续召唤，经验值芙芙是否需要移入保管室
 3丸子50级满级后的锁定有待解决（已解决）
-4友情点不足情况仍须考虑
+4友情点不足导致召唤失败
 5丸子满级，未耗尽材料，但第一个材料位置不足5个导致无法满破而影响升满50级
-6背包内由于有过多种火和芙芙导致无法继续召唤
+6
 7素材较少无法批量选中，只能选中一个（已解决2）
 8召唤中闪退导致出错
 9连续召唤中出现网络波动、小安、lily导致召唤时间不同（已解决2）

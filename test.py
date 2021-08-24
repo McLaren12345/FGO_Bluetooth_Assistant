@@ -3,10 +3,15 @@
 Created on Sun Aug  1 22:50:06 2021
 
 @author: Paul
+
+This program is used for testing only
 """
 
+
+
+
 import Base_func_wormhole as Base_func
-import FGO_optional_func as op
+#import FGO_optional_func as op
 #import Serial_wormhole as Serial
 #import time
 
