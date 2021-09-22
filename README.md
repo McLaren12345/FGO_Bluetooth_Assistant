@@ -174,7 +174,7 @@ The following is the instruction of this programme, you can use translate webpag
 8.更多功能开发中。。。。。
 
 ## 二.使用方法
-0.阅读文档中的PDF文件，内部有蓝牙鼠标模块的淘宝商品界面以及程序中需要一定修改的部分的简介
+0.修改`global_config`里的手机屏幕配置参数，lengh为把虫洞窗口拉伸到纵向649像素时窗口横向的像素数量，bias为游戏两边蓝条的宽度（新版已无），善用`match_template`函数中的`show_switch`参数，可以查看截取的图像是否正确，由于版本大改，`fgo_func`文件中部分像素点也需要修改。
 
 1.安装python3.7运行环境(建议直接安装[Anaconda](https://www.anaconda.com/distribution/))
 
