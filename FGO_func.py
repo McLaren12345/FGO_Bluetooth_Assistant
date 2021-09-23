@@ -193,7 +193,7 @@ def character_skill(character_no, skill_no, para=None):  # 角色编号，技能
 def card(NoblePhantasm_no=1):
     Serial.touch_button(gc.button["AttackButton"])  # 点击attack按钮
     time.sleep(2)
-    Serial.touch(gc.position["NoblePhantasmLeftBias"] + (NoblePhantasm_no - 1) * gc.position["NoblePhantasmLeftBias"], gc.position["NoblePhantasmVerticalPosition"])  # 打手宝具,参数可选1-3号宝具位
+    Serial.touch(gc.position["NoblePhantasmLeftBias"] + (NoblePhantasm_no - 1) * gc.position["NoblePhantasmGap"], gc.position["NoblePhantasmVerticalPosition"])  # 打手宝具,参数可选1-3号宝具位
     Card_index = random.sample(range(0, 4), 2)  # 随机两张牌
     Serial.touch(gc.position["CardLeftBias"] + (Card_index[0]) * gc.position["CardGap"], gc.position["CardVerticalPosition"])
     Serial.touch(gc.position["CardLeftBias"] + (Card_index[1]) * gc.position["CardGap"], gc.position["CardVerticalPosition"])
