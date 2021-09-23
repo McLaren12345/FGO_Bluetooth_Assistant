@@ -45,7 +45,7 @@ position = {
     "SelectCharacterVerticalPosition": 350,  # 选人界面英灵中心距顶端垂直距离
     "SelectCharacterGap": 250,  # 选人界面英灵间距
     "MasterSkillVerticalPosition": 266,  # 御主技能按键距顶端垂直距离
-    "MasterSkillLeftBias": 760,  # 御主技能按键距顶端垂直距离
+    "MasterSkillLeftBias": 760,  # 第一个御主技能按键距与界面左侧距离
     "MasterSkillGap": 80  # 御主技能按键距顶端垂直距离
 }
 
