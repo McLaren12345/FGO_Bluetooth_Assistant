@@ -55,6 +55,11 @@ The following is the instruction of this programme, you can use translate webpag
 
 ## 更新日志
 
+### 2021-9-23
+1.程序结构优化，所有配置均放在`global_config`文件里，如需修改只需改一处即可；
+
+2.提供了WinSpy软件方便调试，可以拖拽查看虫洞界面大小。
+
 ### 2021-8-25 (感谢[paul0718](https://github.com/paul0718)大佬提供的PR):
 1.搓丸子功能全面重构，实现全自动化。可自动抽取友情池、识别背包已满状态、升级经验卡并确保卡片被锁定、贩卖低星级英灵；
 
