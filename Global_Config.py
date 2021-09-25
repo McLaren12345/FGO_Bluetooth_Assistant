@@ -46,7 +46,10 @@ position = {
     "SelectCharacterGap": 250,  # 选人界面英灵间距
     "MasterSkillVerticalPosition": 266,  # 御主技能按键距顶端垂直距离
     "MasterSkillLeftBias": 760,  # 第一个御主技能按键距与界面左侧距离
-    "MasterSkillGap": 80  # 御主技能按键距顶端垂直距离
+    "MasterSkillGap": 80,  # 御主技能按键距顶端垂直距离
+    "ChangeOrderServantLeftBias": 120,
+    "ChangeOrderServantGap": 170,
+    "ChangeOrderServantVerticalPosition": 300
 }
 
 button = {
@@ -59,7 +62,8 @@ button = {
     "NextStep": (986, 565),  # 下一步按键（关卡结束后确认战利品时右下角的按键）
     "RefuseFriendRequest": (235, 525),  # 拒绝好友申请按键
     "MasterSkillButton": (1010, position["MasterSkillVerticalPosition"]),  # 御主技能按键
-    "StartBattleButton": (1005, 570)  # 开始战斗按键
+    "StartBattleButton": (1005, 570),  # 开始战斗按键
+    "ChangeOrderDecideButton": (530, 530)  # 御主换人技能决定按键
 }
 
 

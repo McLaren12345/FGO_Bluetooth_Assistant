@@ -18,12 +18,18 @@ def Chaldea_Combat_Uniform(*args):
         if args[0] == 1:  # 加攻
             Serial.touch(gc.position["MasterSkillLeftBias"], gc.position["MasterSkillVerticalPosition"])
         elif args[0] == 2:  # 眩晕
-            Serial.touch(gc.position["MasterSkillLeftBias"] + gc.position["MasterSkillGap"], gc.position["MasterSkillVerticalPosition"])
+            Serial.touch(gc.position["MasterSkillLeftBias"] + gc.position["MasterSkillGap"],
+                         gc.position["MasterSkillVerticalPosition"])
         elif args[0] == 3:  # 换人
-            Serial.touch(gc.position["MasterSkillLeftBias"] + gc.position["MasterSkillGap"]*2, gc.position["MasterSkillVerticalPosition"])
-            Serial.touch(630 + (args[2] - 1) * 170, 300)
-            Serial.touch(120 + (args[1] - 1) * 170, 300)
-            Serial.touch(530, 530)
+            Serial.touch(gc.position["MasterSkillLeftBias"] + gc.position["MasterSkillGap"] * 2,
+                         gc.position["MasterSkillVerticalPosition"])
+            Serial.touch(
+                gc.position["ChangeOrderServantLeftBias"] + (args[2] + 2) * gc.position["ChangeOrderServantGap"],
+                gc.position["ChangeOrderServantVerticalPosition"])
+            Serial.touch(
+                gc.position["ChangeOrderServantLeftBias"] + (args[1] - 1) * gc.position["ChangeOrderServantGap"],
+                gc.position["ChangeOrderServantVerticalPosition"])
+            Serial.touch_button(gc.button["ChangeOrderDecideButton"])
 
     Hanlder(*args)
 
@@ -33,17 +39,19 @@ def Tropical_Summer(*args):
     def Hanlder(*args):
         if args[0] == 1:
             Serial.touch(gc.position["MasterSkillLeftBias"], gc.position["MasterSkillVerticalPosition"])
-            Position = (gc.position["SelectCharacterLeftBias"] + (args[1] - 1) * gc.position["SelectCharacterGap"], 
+            Position = (gc.position["SelectCharacterLeftBias"] + (args[1] - 1) * gc.position["SelectCharacterGap"],
                         gc.position["SelectCharacterVerticalPosition"])  # 蓝魔放与宝具威力提升，技能选人
             Serial.touch(Position[0], Position[1])
         elif args[0] == 2:
-            Serial.touch(gc.position["MasterSkillLeftBias"] + gc.position["MasterSkillGap"], gc.position["MasterSkillVerticalPosition"]) 
-            Position = (gc.position["SelectCharacterLeftBias"] + (args[1] - 1) * gc.position["SelectCharacterGap"], 
+            Serial.touch(gc.position["MasterSkillLeftBias"] + gc.position["MasterSkillGap"],
+                         gc.position["MasterSkillVerticalPosition"])
+            Position = (gc.position["SelectCharacterLeftBias"] + (args[1] - 1) * gc.position["SelectCharacterGap"],
                         gc.position["SelectCharacterVerticalPosition"])  # 蓝卡暴击星集中度提升，技能选人
             Serial.touch(Position[0], Position[1])
         elif args[0] == 3:
-            Serial.touch(gc.position["MasterSkillLeftBias"] + gc.position["MasterSkillGap"]*2, gc.position["MasterSkillVerticalPosition"])
-            Position = (gc.position["SelectCharacterLeftBias"] + (args[1] - 1) * gc.position["SelectCharacterGap"], 
+            Serial.touch(gc.position["MasterSkillLeftBias"] + gc.position["MasterSkillGap"] * 2,
+                         gc.position["MasterSkillVerticalPosition"])
+            Position = (gc.position["SelectCharacterLeftBias"] + (args[1] - 1) * gc.position["SelectCharacterGap"],
                         gc.position["SelectCharacterVerticalPosition"])  # 充能10%，技能选人
             Serial.touch(Position[0], Position[1])
 
@@ -57,10 +65,12 @@ def Template(*args):
             Serial.touch(gc.position["MasterSkillLeftBias"], gc.position["MasterSkillVerticalPosition"])
             # 写一技能要点的位置，可加参数
         elif args[0] == 2:
-            Serial.touch(gc.position["MasterSkillLeftBias"] + gc.position["MasterSkillGap"], gc.position["MasterSkillVerticalPosition"])
+            Serial.touch(gc.position["MasterSkillLeftBias"] + gc.position["MasterSkillGap"],
+                         gc.position["MasterSkillVerticalPosition"])
             # 写二技能要点的位置，可加参数
         elif args[0] == 3:
-            Serial.touch(gc.position["MasterSkillLeftBias"] + gc.position["MasterSkillGap"]*2, gc.position["MasterSkillVerticalPosition"])
+            Serial.touch(gc.position["MasterSkillLeftBias"] + gc.position["MasterSkillGap"] * 2,
+                         gc.position["MasterSkillVerticalPosition"])
             # 写三技能要点的位置，可加参数
 
     Hanlder(*args)
