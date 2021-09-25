@@ -56,7 +56,7 @@ class Fuse:
             sys.exit(0)
 
 
-def match_template(filename, show_switch=False, err=0.85):
+def match_template(filename, show_switch=False, debug=False, err=0.85):
     '''
     Given the file name of the template, attempts to find the portion 
     that matchs the template and returns the result
@@ -80,6 +80,8 @@ def match_template(filename, show_switch=False, err=0.85):
         The default is 0.85.
         与模板的最低匹配度。
         默认为 0.85。
+    debug : bool, optional
+        debug模式，开启会将每次的截图保存至项目根目录下的template文件夹下的!debug.jpg（覆盖写，仅保存最新的截图）
 
     Returns
     -------
@@ -95,7 +97,7 @@ def match_template(filename, show_switch=False, err=0.85):
     # fuse.increase()
     # print('\nFuse value now: %d' % fuse.value)###########################################
     temppath = gc.template_path_str + filename + ".jpg"
-    img = window_capture()
+    img = window_capture(debug)
     # cv.imshow("Image", img) #for testing
     # img = cv.imread(imgpath)
     player_template = cv.imread(temppath)
@@ -125,19 +127,20 @@ def match_template(filename, show_switch=False, err=0.85):
         return False, (-1, -1)
 
 
-def window_capture():
+def window_capture(debug: bool):
     '''
     截取整个目标窗口，返回截取的图片
     Crop and return a picture of the entire targeted window
     
     Parameters
     ----------
-    None
+    debug : bool, optional
+        debug模式，开启会将每次的截图保存至项目根目录下
     
     Returns
     -------
     cropped : img
-        The cropped picture of the window 
+        The cropped picture of the window
     '''
 
     hwnd = win32gui.FindWindow("Qt5QWindowIcon", gc.config[gc.const_phone]["name"])  # 窗口
@@ -170,8 +173,10 @@ def window_capture():
     # img = cv.imread(filename)
     # 截取出ios屏幕区域
     cropped = img[16:height - 26, (21 + gc.config[gc.const_phone]["bias"]):width - (
-                21 + gc.config[gc.const_phone]["bias"])]  # 裁剪坐标为[y0:y1, x0:x1]
-    # cv.imwrite('C:/Users/Paul/Desktop/test/3.jpg', cropped) #for testing
+            21 + gc.config[gc.const_phone]["bias"])]  # 裁剪坐标为[y0:y1, x0:x1]
+
+    if debug:
+        cv.imwrite(gc.template_path_str + '!debug.jpg', cropped)  # for testing
 
     win32gui.DeleteObject(saveBitMap.GetHandle())  # 释放内存
     saveDC.DeleteDC()

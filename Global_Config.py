@@ -30,6 +30,10 @@ const_position = win32api.GetSystemMetrics(win32con.SM_CXSCREEN) - \
 const_interface_origin = (const_position + 21 + config[const_phone]["bias"], 0 + 16)
 
 # 按键与位置全局配置区
+# 以下数据的单位均为像素，目前是iPhone6/6sp的数据，如不适配需要自行修改
+# 可以通过Base_func中window_capture开启debug参数查看游戏界面的截图
+# 像素测量可以采用Photoshop等专业软件，也可使用win10下的图片软件，裁剪功能里可以设置单位为像素进行测量
+
 position = {
     "CardLeftBias": 115,  # 第一张卡牌与界面左侧距离
     "CardVerticalPosition": 430,  # 卡牌距顶端垂直距离
