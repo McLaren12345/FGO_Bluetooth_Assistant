@@ -5,21 +5,38 @@ Created on Fri Jan 17 10:08:29 2020
 @author: McLaren
 """
 
-from twilio.rest import Client
+import Global_Config as gc
+import smtplib
+from email.mime.text import MIMEText
 
-# STEP1: 去twilio.com注册账户获取token,sid. 详见：https://blog.csdn.net/qq_31801903/article/details/81060448
-# STEP2: 调用函数测试下发送是否成功，手机是否收到短信
-# trial acount预存15美元，每条短信0.028美元，即免费账户可以发送500条短信
-auth_token = ''
-account_sid = ''
-
-client = Client(account_sid, auth_token)
+subject = "FGO脚本提示信息"  # 主题
 
 
-def sent_message(phone_number, text='[FGO]: Detect a special drop item.'):
-    mes = client.messages.create(
-        from_='',  # 填写在active number处获得的号码
-        body=text,
-        to='+86' + str(phone_number)  # 填写自己的手机号码
-    )
-    print(" Message send OK")
+def config_check() -> bool:
+    if not gc.email_notice:
+        return False
+    elif gc.msg_from == "" or gc.msg_to == "" or gc.passwd == "":
+        print(" Need to correctly complete email config before using email notice!")
+        return False
+    else:
+        return True
+
+
+def send_message(text="【FGO】: Detect a special drop item."):
+    if not config_check():
+        return
+        # 正文
+    msg = MIMEText(text, "plain", "utf-8")
+    msg["Subject"] = subject
+    msg["From"] = gc.msg_from
+    msg["To"] = gc.msg_to
+
+    try:
+        s = smtplib.SMTP_SSL("smtp.qq.com", 465)
+        s.login(gc.msg_from, gc.passwd)
+        s.sendmail(gc.msg_from, gc.msg_to, msg.as_string())
+        print("发送成功")
+    except s.SMTPException:
+        print("发送失败")
+    finally:
+        s.quit()

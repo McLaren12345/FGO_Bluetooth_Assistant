@@ -70,11 +70,20 @@ button = {
     "ChangeOrderDecideButton": (530, 530)  # 御主换人技能决定按键
 }
 
+# 邮件提醒功能，若启用必须设置为True，并配置后续内容
+# 配置QQ邮箱的SMTP服务即可实现邮件发送
+# 详见：https://www.cnblogs.com/Alear/p/11594932.html
+email_notice = False
+msg_from = ""  # 发送方邮箱
+passwd = ""  # 填入发送方邮箱的授权码
+msg_to = ""  # 收件人邮箱
 
+# 战斗中金银苹果使用数量、礼装掉落数量
 num_GoldApple_used = 0
 num_SilverApple_used = 0
 num_Craft = 0
 
+# 辅助功能中部分功能的过滤器
 enhancedFilterInit_bool = True
 materialFilterInit_bool = True
 servantFilterInit_bool = True

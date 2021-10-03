@@ -11,9 +11,7 @@ import Serial_wormhole as Serial
 import Base_func_wormhole as Base_func
 import Mystic_Codes
 import Global_Config as gc
-
-# from Notice import sent_message
-
+from Notice import send_message
 
 sys.path.append(gc.default_dir)
 fuse = Base_func.Fuse()
@@ -133,9 +131,12 @@ def budao():
         Serial.touch_button(gc.button["AttackButton"])  # 点击attack按钮
         time.sleep(1)
         Card_index = random.sample(range(0, 4), 3)  # 随机三张牌
-        Serial.touch(gc.position["CardLeftBias"] + (Card_index[0]) * gc.position["CardGap"], gc.position["CardVerticalPosition"])
-        Serial.touch(gc.position["CardLeftBias"] + (Card_index[1]) * gc.position["CardGap"], gc.position["CardVerticalPosition"])
-        Serial.touch(gc.position["CardLeftBias"] + (Card_index[2]) * gc.position["CardGap"], gc.position["CardVerticalPosition"])
+        Serial.touch(gc.position["CardLeftBias"] + (Card_index[0]) * gc.position["CardGap"],
+                     gc.position["CardVerticalPosition"])
+        Serial.touch(gc.position["CardLeftBias"] + (Card_index[1]) * gc.position["CardGap"],
+                     gc.position["CardVerticalPosition"])
+        Serial.touch(gc.position["CardLeftBias"] + (Card_index[2]) * gc.position["CardGap"],
+                     gc.position["CardVerticalPosition"])
         print(" Card has pressed")
         while not (finFlag or attackFlag):
             finFlag, Position = Base_func.match_template("Battlefinish_sign")
@@ -159,6 +160,7 @@ def quit_battle():
     rainbowFlag, Position = Base_func.match_template("Rainbow_box")  # 检测是否掉礼装，若掉落则短信提醒
     if rainbowFlag:
         gc.num_Craft += 1
+        send_message()
     Serial.touch_button(gc.button["NextStep"], 6)
     Serial.touch_button(gc.button["RefuseFriendRequest"], 2)  # 拒绝好友申请
     Serial.mouse_set_zero()  # 鼠标复位,防止误差累积
@@ -183,7 +185,8 @@ def character_skill(character_no, skill_no, para=None):  # 角色编号，技能
     Serial.touch(charPos[0], charPos[1])
     if para != None:
         targetPos = (gc.position["SelectCharacterLeftBias"] +
-                     (para - 1) * gc.position["SelectCharacterGap"], gc.position["SelectCharacterVerticalPosition"])  # 技能选人
+                     (para - 1) * gc.position["SelectCharacterGap"],
+                     gc.position["SelectCharacterVerticalPosition"])  # 技能选人
         Serial.touch(targetPos[0], targetPos[1])
     time.sleep(3)  # 等待技能动画时间
     WaitForBattleStart()
@@ -193,63 +196,49 @@ def character_skill(character_no, skill_no, para=None):  # 角色编号，技能
 def card(NoblePhantasm_no=1):
     Serial.touch_button(gc.button["AttackButton"])  # 点击attack按钮
     time.sleep(2)
-    Serial.touch(gc.position["NoblePhantasmLeftBias"] + (NoblePhantasm_no - 1) * gc.position["NoblePhantasmGap"], gc.position["NoblePhantasmVerticalPosition"])  # 打手宝具,参数可选1-3号宝具位
+    Serial.touch(gc.position["NoblePhantasmLeftBias"] + (NoblePhantasm_no - 1) * gc.position["NoblePhantasmGap"],
+                 gc.position["NoblePhantasmVerticalPosition"])  # 打手宝具,参数可选1-3号宝具位
     Card_index = random.sample(range(0, 4), 2)  # 随机两张牌
-    Serial.touch(gc.position["CardLeftBias"] + (Card_index[0]) * gc.position["CardGap"], gc.position["CardVerticalPosition"])
-    Serial.touch(gc.position["CardLeftBias"] + (Card_index[1]) * gc.position["CardGap"], gc.position["CardVerticalPosition"])
+    Serial.touch(gc.position["CardLeftBias"] + (Card_index[0]) * gc.position["CardGap"],
+                 gc.position["CardVerticalPosition"])
+    Serial.touch(gc.position["CardLeftBias"] + (Card_index[1]) * gc.position["CardGap"],
+                 gc.position["CardVerticalPosition"])
     print(" Card has pressed")
 
 
 def battle():
-    # 判断是否进入战斗界面
-    # Serial.mouse_set_zero()         #鼠标复位,防止误差累积
     Serial.touch_button(gc.button["StartBattleButton"])
     print(" Start battle button pressed")
     time.sleep(8)  # 等待战斗开始
+    # 判断是否进入战斗界面
     WaitForBattleStart()
-    # time.sleep(6)                   #等待6秒，因为礼装效果掉落暴击星会耗时
+
     """
-    #Turn1
-    character_skill(3,1,1)
-    character_skill(2,1,1)
-    character_skill(1,2)  
-    card()
-    
-    #Serial.mouse_set_zero()         #鼠标复位,防止误差累积
-    time.sleep(10)                          #等待战斗动画播放完成
-    Current_state.WaitForBattleStart()
-    #Turn2
-    character_skill(3,3,1)
-    Master_skill(Mystic_Codes.Chaldea_Combat_Uniform, 3,3,2)
-    character_skill(3,3)
-    character_skill(3,2)
-    card()    
-    
-    #Serial.mouse_set_zero()         #鼠标复位,防止误差累积
-    time.sleep(10)                          #等待战斗动画播放完成
-    Current_state.WaitForBattleStart()
-    #Turn3
-    character_skill(3,1,1)
-    character_skill(2,3,1)
-    card()
+    Turn1
     """
     character_skill(3, 1, 1)
     character_skill(2, 1, 1)
     character_skill(1, 2)
-    Master_skill(Mystic_Codes.Tropical_Summer, 2, 1, 1)
     card()
-    time.sleep(10)
-    WaitForBattleStart()
 
+    time.sleep(10)  # 等待战斗动画播放完成
+    WaitForBattleStart()
+    """
+    Turn2
+    """
     character_skill(3, 3, 1)
-    card()
-    time.sleep(10)
-    WaitForBattleStart()
-
-    character_skill(2, 3, 1)
-    character_skill(2, 2)
+    Master_skill(Mystic_Codes.Chaldea_Combat_Uniform, 3, 3, 2)
+    character_skill(3, 3)
     character_skill(3, 2)
-    character_skill(1, 1)
+    card()
+
+    time.sleep(10)  # 等待战斗动画播放完成
+    WaitForBattleStart()
+    """
+    Turn3
+    """
+    character_skill(3, 1, 1)
+    character_skill(2, 3, 1)
     card()
 
 
