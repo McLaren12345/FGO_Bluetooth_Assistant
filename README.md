@@ -55,6 +55,9 @@ The following is the instruction of this programme, you can use translate webpag
 
 ## 更新日志
 
+### 2021-10-3:
+1.新增了邮件提醒功能以取代手机短信提醒。
+
 ### 2021-9-23
 1.程序结构优化，所有配置均放在`global_config`文件里，如需修改只需改一处即可；
 
