@@ -51,9 +51,9 @@ position = {
     "MasterSkillVerticalPosition": 266,  # 御主技能按键距顶端垂直距离
     "MasterSkillLeftBias": 760,  # 第一个御主技能按键距与界面左侧距离
     "MasterSkillGap": 80,  # 御主技能按键距顶端垂直距离
-    "ChangeOrderServantLeftBias": 120,
-    "ChangeOrderServantGap": 170,
-    "ChangeOrderServantVerticalPosition": 300
+    "ChangeOrderServantLeftBias": 120,  # 换人界面第一个英灵与界面左侧距离
+    "ChangeOrderServantGap": 170,  # 换人界面英灵间距
+    "ChangeOrderServantVerticalPosition": 300  # 换人界面英灵中心距顶端垂直距离
 }
 
 button = {
