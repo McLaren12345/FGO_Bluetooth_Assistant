@@ -9,7 +9,6 @@ import sys
 import Serial_wormhole as Serial 
 import time
 import Base_func_wormhole as Base_func
-import pyautogui as ag
 import Global_Config as gc
 
 sys.path.append(gc.default_dir) 
@@ -26,13 +25,9 @@ def InfinatePool():
         Serial.mouse_click()
 '''
 
-def getpos():
-    orgpos = ag.position()
-    zero_x = 1479
-    zero_y = 16
-    px = orgpos[0] - zero_x
-    py = orgpos[1] - zero_y
-    return (px, py)
+
+
+
 
 
 def main_click_menu():                  #主菜单

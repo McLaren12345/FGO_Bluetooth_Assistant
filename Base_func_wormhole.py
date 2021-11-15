@@ -12,8 +12,9 @@ import sys
 import Global_Config as gc
 #from Notice import sent_message
 
-sys.path.append(gc.default_dir) 
 
+
+sys.path.append(gc.default_dir) 
 
 def init_wormhole():
     '''
@@ -31,25 +32,46 @@ def init_wormhole():
 
     '''
     hwnd = win32gui.FindWindow("Qt5QWindowIcon",gc.config[gc.const_phone]["name"]) # 窗口
-    win32gui.SetWindowPos(hwnd,win32con.HWND_TOPMOST,gc.const_position,0,gc.config[gc.const_phone]["length"],649,0)
+    win32gui.SetWindowPos(hwnd,
+                          win32con.HWND_TOPMOST,gc.const_position,
+                          0,
+                          gc.config[gc.const_phone]["width"],
+                          gc.config[gc.const_phone]["height"],
+                          0)
     
 
 class Fuse:
     def __init__(self):
-        init_wormhole()
+        self.TimeOutNum = 0
+        self.TimeOutMax = 10
         self.value = 0
-        self.tolerant_time = 50     #截取50张图片后仍未发现对应目标则报错
-                                    #防止程序死在死循环里    
+        self.tolerant_time = 10     #截取50张图片后仍未发现对应目标则报错
+                                        #防止程序死在死循环里 
+        
+    def set_acceptable_time(self, time_per_loop, max_waiting = 60): #seconds
+        self.tolerant_time = int( max_waiting // time_per_loop)
+        
     def increase(self):
         self.value += 1
+        # print("Fuse: tolerant is %d, value is %d" % (self.tolerant_time, self.value))
+        
+    def increase_time_out(self):
+        self.TimeOutNum += 1
+        
+    def reset_timeout(self):
+        pass
         
     def reset(self):
+        self.TimeOutNum = 0
         self.value = 0
         
     def alarm(self):
         if self.value >= self.tolerant_time:
             #sent_message(text='【FGO】: Encounter a fuse error.')
             print("Fuse Error!")
+            sys.exit(0)
+        if self.TimeOutNum >= self.TimeOutMax:
+            print("Connection Lost")
             sys.exit(0)
             
 
@@ -166,8 +188,9 @@ def window_capture():
 
     #img = cv.imread(filename)
     #截取出ios屏幕区域
-    cropped = img[16:height-26, (21+gc.config[gc.const_phone]["bias"]):width-(21+gc.config[gc.const_phone]["bias"])]  # 裁剪坐标为[y0:y1, x0:x1]
-    #cv.imwrite('C:/Users/Paul/Desktop/test/3.jpg', cropped) #for testing
+    cropped = img[(16+gc.config[gc.const_phone]["y_deviation"]):height-(26+gc.config[gc.const_phone]["y_deviation"]), 
+                  (21+gc.config[gc.const_phone]["x_deviation"]):width-(21+gc.config[gc.const_phone]["x_deviation"])]  # 裁剪坐标为[y0:y1, x0:x1]
+    # cv.imwrite('C:/Users/Paul/Desktop/test/3.jpg', cropped) #for testing
     
     win32gui.DeleteObject(saveBitMap.GetHandle()) #释放内存
     saveDC.DeleteDC()
@@ -175,4 +198,6 @@ def window_capture():
     win32gui.ReleaseDC(hwnd,hwndDC)
     
     return cropped
+
+match_template("Menu_button")
 

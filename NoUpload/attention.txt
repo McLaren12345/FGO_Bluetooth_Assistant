@@ -1,0 +1,7 @@
+1696 811
+1357 649
+default_dir = r"C:\Users\Paul\Desktop\FGO_Bluetooth_Assistant-master"
+template_path_str = "C:/Users/Paul/Desktop/FGO_Bluetooth_Assistant-master/Template/"
+记录：
+请保证缩放与布局为100%，否则win32gui.GetWindowRect(hwnd)获得的窗口参数将不准确
+请保证虫洞设置内自动隐藏任务栏选项已打开，运行程序前请保证任务栏已被隐藏，否则会导致窗口的大小与预设值有差异导致无法匹配模板
