@@ -60,6 +60,9 @@ The following is the instruction of this programme, you can use translate webpag
 2.优化大量代码运行逻辑，以便后续开发
 3.优化软件运行效率
 
+### 2021-8-8:
+1.新增了C呆的技能识别模板。
+
 ### 2021-5-16:
 1.新增了适配虫洞软件的鼠标驱动文件，可以几乎完美的控制iOS 13.3以上的系统以及全面屏手机。
 
