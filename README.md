@@ -20,6 +20,9 @@ Since I'm a FGO player of Chinese server, all the image templates are Chinese ve
 The following is the instruction of this programme, you can use translate webpage to read them.
 
 <span id="jump1"> </span>
+### 国服跨平台登录功能开发须知
+国服于2021年12月31日预告了安卓与IOS跨平台登录功能将于下一次大版本更新后上线，由于安卓脚本已经十分完善，故本项目将停止后续更新，带跨平台登录功能开发完成直接使用安卓系脚本即可。
+
 ### 通用的使用方法
 由于已知的兼容性问题，蓝牙鼠标模块仅适用于矩形屏幕以及ios13-ios13.3系统，考虑到实际情况通用性极差。因此目前推荐使用[虫洞](https://er.run/)软件来进行投屏与控制，现以新增虫洞的投屏与鼠标驱动。
 
